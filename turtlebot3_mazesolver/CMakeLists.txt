@@ -7,7 +7,7 @@ endif()
 
 
 install(
-  DIRECTORY launch config urdf
+  DIRECTORY launch config urdf rviz
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     rviz_folder = os.path.join(
-        get_package_share_directory("turtlebot3_mazesolver"), "launch"
+        get_package_share_directory("turtlebot3_mazesolver"), "rviz"
     )
 
     return LaunchDescription(
