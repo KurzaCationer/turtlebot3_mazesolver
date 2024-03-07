@@ -62,6 +62,11 @@ def generate_launch_description():
                 ],
             ),
             Node(
+                package="tf2_ros",
+                executable="static_transform_publisher",
+                arguments=["0", "0", "0", "0", "0", "0", "map", [name, "/map"]],
+            ),
+            Node(
                 package="gazebo_ros",
                 executable="spawn_entity.py",
                 arguments=[
