@@ -37,11 +37,6 @@ def generate_launch_description():
                     os.path.join(gazebo_ros, "launch", "gzclient.launch.py")
                 )
             ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                arguments = ["0", "0", "0", "0", "0", "0", "world", "map"],
-            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(

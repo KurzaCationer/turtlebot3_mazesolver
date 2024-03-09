@@ -6,6 +6,8 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -66,5 +68,14 @@ def generate_launch_description():
                     },
                 ],
             ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(turtlebot3_mazesolver, 'launch', "localization.launch.py")
+                ),
+                launch_arguments={
+                    "params_file": os.path.join(turtlebot3_mazesolver, 'config', 'amcl.yaml'),
+                    "namespace": ['/', name]
+                }.items(),
+            )
         ]
     )
