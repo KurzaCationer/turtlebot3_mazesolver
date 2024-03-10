@@ -6,8 +6,6 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -17,16 +15,17 @@ def generate_launch_description():
     publish_period_sec = LaunchConfiguration("publish_period_sec", default="1.0")
 
     turtlebot3_mazesolver = get_package_share_directory("turtlebot3_mazesolver")
-    
-    config_file_dir = os.path.join(turtlebot3_mazesolver, "config")
+
+    params = os.path.join(turtlebot3_mazesolver, "config", "params.yaml")
 
     return LaunchDescription(
         [
             DeclareLaunchArgument(
                 "use_sim_time",
-                default_value="false",
+                default_value=use_sim_time,
                 description="Use simulation (Gazebo) clock if true",
             ),
+            DeclareLaunchArgument("name", default_value=name, description="name"),
             DeclareLaunchArgument(
                 "resolution",
                 default_value=resolution,
@@ -37,29 +36,40 @@ def generate_launch_description():
                 default_value=publish_period_sec,
                 description="OccupancyGrid publishing period",
             ),
-            DeclareLaunchArgument("name", default_value="tb0", description="name"),
+            Node(
+                package="tf2_ros",
+                executable="static_transform_publisher",
+                arguments=["0", "0", "0", "0", "0", "0", "world", [name, "/map"]],
+            ),
+            # Node(
+            #     package="slam_gmapping",
+            #     name="slam_gmapping",
+            #     namespace=["/", name],
+            #     executable="slam_gmapping",
+            #     output="screen",
+            #     parameters=[params, {"use_sim_time": use_sim_time}],
+            # ),
             Node(
                 package="slam_toolbox",
                 executable="async_slam_toolbox_node",
                 name="slam_toolbox",
                 output="screen",
-                namespace=["/", name],
                 remappings=[
-                    ("/scan", "scan"),
-                    ("/map", "map"),
-                    ("/odom", "odom"),
-                    ("/map_metadata", "map_metadata"),
+                    ("/scan", ["/", name, "/scan"]),
+                    ("/map", ["/", name, "/map"]),
+                    ("/odom", ["/", name, "/odom"]),
+                    ("/map_metadata", ["/", name, "/map_metadata"]),
                     (
                         "/slam_toolbox/scan_visualization",
-                        "slam_toolbox/scan_visualization",
+                        ["/", name, "/slam_toolbox/scan_visualization"],
                     ),
                     (
                         "/slam_toolbox/graph_visualization",
-                        "slam_toolbox/graph_visualization",
+                        ["/", name, "/slam_toolbox/graph_visualization"],
                     ),
                 ],
                 parameters=[
-                    os.path.join(config_file_dir, "slam_params_online_async.yaml"),
+                    params,
                     {
                         "use_sim_time": use_sim_time,
                         "odom_frame": [name, "/odom"],
@@ -68,14 +78,5 @@ def generate_launch_description():
                     },
                 ],
             ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(turtlebot3_mazesolver, 'launch', "localization.launch.py")
-                ),
-                launch_arguments={
-                    "params_file": os.path.join(turtlebot3_mazesolver, 'config', 'amcl.yaml'),
-                    "namespace": ['/', name]
-                }.items(),
-            )
         ]
     )

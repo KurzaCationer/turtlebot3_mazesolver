@@ -16,28 +16,20 @@ def generate_launch_description():
         [
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(mazesolver_launch_dir, "empty_world.launch.py")
+                    os.path.join(mazesolver_launch_dir, "physical_world.launch.py")
                 )
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(mazesolver_launch_dir, "spawn_turtlebot3.launch.py")
+                    os.path.join(mazesolver_launch_dir, "physical_tb3.launch.py")
                 ),
-                launch_arguments={
-                    "name": "tb0",
-                    "x_pose": "-2.0",
-                    "y_pose": "0.5",
-                }.items(),
+                launch_arguments={"name": "tb0"}.items(),
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(mazesolver_launch_dir, "spawn_turtlebot3.launch.py")
+                    os.path.join(mazesolver_launch_dir, "physical_tb3.launch.py")
                 ),
-                launch_arguments={
-                    "name": "tb1",
-                    "x_pose": "-2.0",
-                    "y_pose": "-0.5",
-                }.items(),
+                launch_arguments={"name": "tb1"}.items(),
             ),
         ]
     )
