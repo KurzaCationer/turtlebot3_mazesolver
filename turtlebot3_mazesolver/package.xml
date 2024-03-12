@@ -10,11 +10,16 @@
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  
+  <depend>rclpy</depend>
+
   <exec_depend>turtlebot3_simulations</exec_depend>
   <exec_depend>turtlebot3_cartographer</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>multirobot_map_merge</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
