@@ -14,6 +14,11 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(
+  DIRECTORY launch/common
+  DESTINATION share/${PROJECT_NAME}/install
+)
+
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
