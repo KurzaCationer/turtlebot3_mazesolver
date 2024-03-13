@@ -14,7 +14,6 @@
   
   <depend>rclpy</depend>
 
-  <exec_depend>turtlebot3_simulations</exec_depend>
   <exec_depend>turtlebot3_cartographer</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>
